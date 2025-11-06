@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:github_task/core/utils/widgets/custom_app_bar.dart';
+import 'package:github_task/features/auth/presentation/widgets/login_form.dart';
 
 import '../../../../core/config/themes/app_theme.dart';
 
@@ -8,10 +11,27 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Text(
-          'Login Screen',
-          style: TextStyles.bold16W700(context),
+      // custom app bar
+      appBar: customAppBar(context: context, title: 'Login'),
+
+      // body
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              // header
+              SizedBox(height: 0.15.sh),
+              Text(
+                'Login with your Github Account',
+                style: TextStyles.bold16W700(context),
+              ),
+              SizedBox(height: 16.h),
+
+              // login form
+              const LoginForm(),
+            ],
+          ),
         ),
       ),
     );
