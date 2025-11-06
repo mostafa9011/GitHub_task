@@ -13,7 +13,9 @@ class CircularImage extends StatelessWidget {
   final String image;
   final ImageType imageType;
   const CircularImage({
-    required this.radius, required this.image, super.key,
+    required this.radius,
+    required this.image,
+    super.key,
     this.imageType = ImageType.network,
   });
 

@@ -1,3 +1,4 @@
 class PageName {
-  static const String login = '/login';
+  static const String loginScreen = '/loginScreen';
+  static const String homeScreen = '/homeScreen';
 }
