@@ -7,6 +7,7 @@ AppBar customAppBar({
   required String title,
   bool centerTitle = true,
   bool automaticallyImplyLeading = false,
+  bool showThemeToggle = true,
 }) {
   return AppBar(
     centerTitle: centerTitle,
@@ -17,12 +18,14 @@ AppBar customAppBar({
     ),
     actions: [
       // toggle theme button
-      IconButton(
-        onPressed: () {
-          ConfigCubit.of(context).toggleTheme();
-        },
-        icon: const Icon(Icons.brightness_6),
-      ),
+      if (showThemeToggle) ...[
+        IconButton(
+          onPressed: () {
+            ConfigCubit.of(context).toggleTheme();
+          },
+          icon: const Icon(Icons.brightness_6),
+        ),
+      ],
     ],
   );
 }

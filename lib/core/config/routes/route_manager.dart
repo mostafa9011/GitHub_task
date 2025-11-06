@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_task/features/home/presentation/screens/repository_details_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../../../features/auth/presentation/screens/login_screen.dart';
@@ -20,6 +21,12 @@ class RouteManager {
       case PageName.homeScreen:
         return _getPageTransition(
           const HomeScreen(),
+          settings: routeSettings,
+        );
+
+      case PageName.repositoryDetailsScreen:
+        return _getPageTransition(
+          const RepositoryDetailsScreen(),
           settings: routeSettings,
         );
 
