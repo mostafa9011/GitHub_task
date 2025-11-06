@@ -1,0 +1,48 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import 'core/config/config_cubit/config_cubit.dart';
+import 'core/config/routes/page_name.dart';
+import 'core/config/routes/route_manager.dart';
+import 'core/config/themes/color_manager.dart';
+import 'core/utils/dependency_injection/di.dart';
+import 'core/utils/size_manager.dart';
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => sl<ConfigCubit>(),
+      child: Builder(
+        builder: (context) {
+          return ScreenUtilInit(
+            designSize: const Size(370, 700),
+            minTextAdapt: true,
+            splitScreenMode: true,
+            builder: (_, child) => BlocBuilder<ConfigCubit, ConfigState>(
+              builder: (context, state) {
+                return LayoutBuilder(
+                  builder: (context, constraints) {
+                    SizeManager.updateInfo(context);
+                    return MaterialApp(
+                      debugShowCheckedModeBanner: false,
+                      theme: lightTheme,
+                      darkTheme: darkTheme,
+                      themeMode: ConfigCubit.themeMode,
+                      navigatorKey: RouteManager.navigatorKey,
+                      initialRoute: PageName.login,
+                      onGenerateRoute: RouteManager.onGenerateRoute,
+                    );
+                  },
+                );
+              },
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
