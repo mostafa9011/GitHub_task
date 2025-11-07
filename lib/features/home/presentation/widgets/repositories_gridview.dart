@@ -50,6 +50,8 @@ class RepositoriesGridview extends StatelessWidget {
                   style: TextStyles.semiBold18W600(context).copyWith(
                     color: context.colorScheme.primary,
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 4.h),
                 Text(
@@ -57,6 +59,8 @@ class RepositoriesGridview extends StatelessWidget {
                   style: TextStyles.regular12W400(context)
                       .copyWith(color: Colors.grey),
                   textAlign: TextAlign.center,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ],
             ),
