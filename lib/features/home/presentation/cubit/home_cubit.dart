@@ -57,16 +57,14 @@ class HomeCubit extends Cubit<HomeState> {
 
   // sort repositories
   void sortRepositories({required FilterEnum filter}) {
-    if (state is HomeSuccess) {
-      if (filter == FilterEnum.name) {
-        repositories.sort((a, b) => a.name.compareTo(b.name));
-      } else if (filter == FilterEnum.date) {
-        repositories.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
-      } else if (filter == FilterEnum.stars) {
-        repositories
-            .sort((a, b) => a.stargazersCount.compareTo(b.stargazersCount));
-      }
-      emit(HomeSuccess(repositories: repositories));
+    if (filter == FilterEnum.name) {
+      repositories.sort((a, b) => a.name.compareTo(b.name));
+    } else if (filter == FilterEnum.date) {
+      repositories.sort((a, b) => a.updatedAt.compareTo(b.updatedAt));
+    } else if (filter == FilterEnum.stars) {
+      repositories
+          .sort((a, b) => a.stargazersCount.compareTo(b.stargazersCount));
     }
+    emit(HomeSuccess(repositories: repositories));
   }
 }
