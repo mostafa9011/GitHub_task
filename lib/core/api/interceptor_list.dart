@@ -5,7 +5,6 @@ import '../config/routes/page_name.dart';
 import '../config/routes/route_manager.dart';
 import '../errors/api/api_response_codes.dart';
 import '../helpers/cache_helper.dart';
-import '../utils/functions/kprint.dart';
 import '../utils/keys_manager.dart';
 
 List<Interceptor> dioInterceptors = [
@@ -31,8 +30,6 @@ List<Interceptor> dioInterceptors = [
     //   return handler.next(response);
     // },
     onError: (error, handler) {
-      kprint("Error from DioConsumer: ${error.message}");
-
       if (error.response?.statusCode == APIResponseCodes.unauthorized ||
           error.response?.statusCode == APIResponseCodes.forbidden) {
         /// User is unauthorized or forbidden

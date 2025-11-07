@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../config/routes/route_manager.dart';
-import '../../config/themes/app_theme.dart';
-import '../../extensions/context_extension.dart';
-
 enum ToastType { success, error, warning }
 
 OverlayEntry? _currentToast;
@@ -16,6 +12,7 @@ void showToast({
 }) {
   final overlayState = Overlay.of(context, rootOverlay: true);
 
+  // Remove previous toast if present
   _currentToast?.remove();
   _currentToast = null;
 
@@ -29,6 +26,7 @@ void showToast({
   _currentToast = overlayEntry;
   overlayState.insert(overlayEntry);
 
+  // Auto dismiss
   Future.delayed(const Duration(seconds: 2), () {
     _currentToast?.remove();
     _currentToast = null;
@@ -58,6 +56,7 @@ class _ToastWidgetState extends State<_ToastWidget>
   void initState() {
     super.initState();
 
+    // Slide animation
     _controller = AnimationController(
       duration: const Duration(milliseconds: 550),
       vsync: this,
@@ -75,15 +74,16 @@ class _ToastWidgetState extends State<_ToastWidget>
       ),
     );
 
+    // Set background color clearly visible
     switch (widget.type) {
       case ToastType.success:
-        _bgColor = RouteManager.currentContext.colorScheme.tertiary;
+        _bgColor = Colors.green;
         break;
       case ToastType.error:
-        _bgColor = RouteManager.currentContext.colorScheme.error;
+        _bgColor = Colors.red;
         break;
       case ToastType.warning:
-        _bgColor = RouteManager.currentContext.colorScheme.onTertiary;
+        _bgColor = Colors.amber;
         break;
     }
 
@@ -107,20 +107,19 @@ class _ToastWidgetState extends State<_ToastWidget>
         child: Material(
           color: Colors.transparent,
           child: Container(
-            padding: EdgeInsets.symmetric(vertical: 8.h, horizontal: 16.w),
+            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 18.w),
             decoration: BoxDecoration(
               color: _bgColor,
               borderRadius: BorderRadius.circular(12),
               boxShadow: [
                 BoxShadow(
-                  color: Theme.of(context).colorScheme.onSurface,
+                  color: Colors.black.withOpacity(0.3),
                   blurRadius: 10,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
                 Icon(
                   widget.type == ToastType.success
@@ -128,22 +127,16 @@ class _ToastWidgetState extends State<_ToastWidget>
                       : widget.type == ToastType.error
                           ? Icons.error
                           : Icons.warning,
-                  color: widget.type == ToastType.success
-                      ? context.colorScheme.tertiary
-                      : widget.type == ToastType.error
-                          ? context.colorScheme.error
-                          : context.colorScheme.onTertiary,
+                  color: Colors.white, // Always visible
                 ),
                 SizedBox(width: 10.w),
                 Expanded(
                   child: Text(
                     widget.message,
-                    style: TextStyles.medium16W500(context).copyWith(
-                      color: widget.type == ToastType.success
-                          ? context.colorScheme.tertiary
-                          : widget.type == ToastType.error
-                              ? context.colorScheme.error
-                              : context.colorScheme.onTertiary,
+                    style: TextStyle(
+                      fontSize: 15.sp,
+                      color: Colors.white, // Always visible
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
                 ),

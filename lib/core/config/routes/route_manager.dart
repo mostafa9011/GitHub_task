@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:github_task/features/auth/domain/entities/github_user_entity.dart';
 import 'package:github_task/features/home/presentation/screens/repository_details_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -19,8 +20,10 @@ class RouteManager {
         );
 
       case PageName.homeScreen:
+        final user = routeSettings.arguments as GithubUserEntity;
+
         return _getPageTransition(
-          const HomeScreen(),
+          HomeScreen(user: user),
           settings: routeSettings,
         );
 

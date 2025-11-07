@@ -1,5 +1,7 @@
 abstract class EndPoints {
-  static const String baseUrl = "https://cfi-api.doctor-code.net";
+  static const String baseUrl = "https://api.github.com";
 
-  static const String login = "/login";
+  static String loginWithGithubUser({required String username}) {
+    return "$baseUrl/users/$username";
+  }
 }

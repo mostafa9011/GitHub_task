@@ -15,8 +15,8 @@ class BadResponseErrorHandler implements ErrorHandlerService {
 
     // if there is no response
     if (statusCode == null) {
-      return const ServerFailure(
-        message: "unknown error occurred",
+      return ServerFailure(
+        message: statusMessage,
         statusCode: APIResponseCodes.unknown,
       );
     }
