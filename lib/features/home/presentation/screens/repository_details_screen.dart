@@ -5,29 +5,14 @@ import 'package:github_task/core/extensions/context_extension.dart';
 import 'package:github_task/core/utils/functions/custom_launch_url.dart';
 import 'package:github_task/core/utils/widgets/circular_image.dart';
 import 'package:github_task/core/utils/widgets/custom_app_bar.dart';
+import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
 
 class RepositoryDetailsScreen extends StatelessWidget {
-  final String name;
-  final String? description;
-  final int stars;
-  final int forks;
-  final String? language;
-  final String url;
-
-  // New owner parameters
-  final String ownerName;
-  final String ownerAvatarUrl;
+  final RepositoryEntity repository;
 
   const RepositoryDetailsScreen({
     super.key,
-    this.name = "Repository Name",
-    this.description = "Repository Description",
-    this.stars = 4,
-    this.forks = 3,
-    this.language = 'Dart',
-    this.url = 'https://github.com',
-    this.ownerName = 'Owner Name',
-    this.ownerAvatarUrl = 'https://via.placeholder.com/150',
+    required this.repository,
   });
 
   @override
@@ -35,7 +20,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: customAppBar(
         context: context,
-        title: name,
+        title: repository.name,
         automaticallyImplyLeading: true,
         showThemeToggle: false,
       ),
@@ -48,12 +33,12 @@ class RepositoryDetailsScreen extends StatelessWidget {
             Row(
               children: [
                 // Owner avatar image
-                const CircularImage(radius: 24, image: ''),
+                CircularImage(radius: 24, image: repository.owner.avatarUrl),
                 const SizedBox(width: 12),
 
                 // Owner name text
                 Text(
-                  ownerName,
+                  repository.owner.username,
                   style: TextStyles.medium16W500(context),
                 ),
               ],
@@ -62,7 +47,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
 
             // Repository name
             Text(
-              name,
+              repository.name,
               style: TextStyles.bold16W700(context).copyWith(
                 color: context.colorScheme.primary,
               ),
@@ -72,7 +57,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
 
             // Description section
             Text(
-              description ?? "No description available.",
+              repository.description ?? "No description available.",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
 
@@ -85,7 +70,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
                   children: [
                     const Icon(Icons.star, size: 20),
                     const SizedBox(width: 6),
-                    Text("$stars Stars"),
+                    Text("${repository.stargazersCount} Stars"),
                   ],
                 ),
                 const SizedBox(width: 24),
@@ -93,7 +78,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
                   children: [
                     const Icon(Icons.fork_right, size: 20),
                     const SizedBox(width: 6),
-                    Text("$forks Forks"),
+                    Text("${repository.forksCount} Forks"),
                   ],
                 ),
               ],
@@ -106,7 +91,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
               children: [
                 const Icon(Icons.code, size: 20),
                 const SizedBox(width: 6),
-                Text(language ?? ""),
+                Text(repository.language),
               ],
             ),
 
@@ -116,7 +101,7 @@ class RepositoryDetailsScreen extends StatelessWidget {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  customLaunchUrl(url: url);
+                  customLaunchUrl(url: repository.htmlUrl);
                 },
                 child: const Text("Open in GitHub"),
               ),

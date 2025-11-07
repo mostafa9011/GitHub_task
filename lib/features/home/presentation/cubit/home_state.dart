@@ -1,10 +1,25 @@
 part of 'home_cubit.dart';
 
-abstract class HomeState extends Equatable {
-  const HomeState();
-
-  @override
-  List<Object> get props => [];
-}
+abstract class HomeState {}
 
 class HomeInitial extends HomeState {}
+
+class HomeLoading extends HomeState {}
+
+class HomeSuccess extends HomeState {
+  final List<RepositoryEntity> repositories;
+
+  HomeSuccess({required this.repositories});
+}
+
+class HomeFailure extends HomeState {
+  final String errorMessage;
+
+  HomeFailure({required this.errorMessage});
+}
+
+class HomeGridToggled extends HomeState {
+  final bool isGrid;
+
+  HomeGridToggled({required this.isGrid});
+}

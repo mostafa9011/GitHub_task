@@ -6,7 +6,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../enums/image_type.dart';
-import '../functions/kprint.dart';
 
 class CircularImage extends StatelessWidget {
   final double radius;
@@ -21,7 +20,6 @@ class CircularImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    kprint("Image: $image");
     // if image is from assets
     if (imageType == ImageType.assets) {
       return Container(

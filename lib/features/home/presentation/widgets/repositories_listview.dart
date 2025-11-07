@@ -3,20 +3,24 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:github_task/core/config/routes/page_name.dart';
 import 'package:github_task/core/extensions/context_extension.dart';
 import 'package:github_task/core/utils/widgets/circular_image.dart';
+import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
 
 class RepositoriesListview extends StatelessWidget {
-  const RepositoriesListview({super.key});
+  final List<RepositoryEntity> repositories;
+
+  const RepositoriesListview({super.key, required this.repositories});
 
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: 10,
+      itemCount: repositories.length,
       itemBuilder: (context, index) {
         return Bounceable(
           onTap: () {
             Navigator.pushNamed(
               context,
               PageName.repositoryDetailsScreen,
+              arguments: repositories[index],
             );
           },
           child: Container(
@@ -27,9 +31,14 @@ class RepositoriesListview extends StatelessWidget {
             ),
             child: ListTile(
               leading: const Icon(Icons.book),
-              title: Text('Repository $index'),
-              subtitle: Text('Description of repository $index'),
-              trailing: const CircularImage(radius: 16, image: 'image'),
+              title: Text(repositories[index].name),
+              subtitle: Text(
+                repositories[index].description ?? 'No description available',
+              ),
+              trailing: CircularImage(
+                radius: 16,
+                image: repositories[index].owner.avatarUrl,
+              ),
             ),
           ),
         );

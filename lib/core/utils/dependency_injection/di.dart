@@ -4,6 +4,7 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:github_task/core/utils/dependency_injection/register_auth_dependencies.dart';
+import 'package:github_task/core/utils/dependency_injection/register_home_dependencies.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../api/dio_consumer.dart';
@@ -25,4 +26,5 @@ Future<void> initDependencies() async {
 
   registerConfigCubit();
   registerAuthDependencies();
+  registerHomeDependencies();
 }

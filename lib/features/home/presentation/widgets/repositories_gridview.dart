@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:github_task/core/config/routes/page_name.dart';
 import 'package:github_task/core/config/themes/app_theme.dart';
 import 'package:github_task/core/extensions/context_extension.dart';
 import 'package:github_task/core/utils/widgets/circular_image.dart';
+import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
 
 class RepositoriesGridview extends StatelessWidget {
-  const RepositoriesGridview({super.key});
+  final List<RepositoryEntity> repositories;
+
+  const RepositoriesGridview({super.key, required this.repositories});
 
   @override
   Widget build(BuildContext context) {
@@ -16,11 +20,19 @@ class RepositoriesGridview extends StatelessWidget {
         mainAxisSpacing: 12,
         crossAxisSpacing: 12,
       ),
-      itemCount: 10,
+      itemCount: repositories.length,
       itemBuilder: (context, index) {
+        final repository = repositories[index];
         return Bounceable(
-          onTap: () {},
+          onTap: () {
+            Navigator.pushNamed(
+              context,
+              PageName.repositoryDetailsScreen,
+              arguments: repositories[index],
+            );
+          },
           child: Container(
+            padding: EdgeInsets.all(10.r),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               border: Border.all(
@@ -31,15 +43,17 @@ class RepositoriesGridview extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const CircularImage(radius: 16, image: 'image'),
+                CircularImage(radius: 16, image: repository.owner.avatarUrl),
                 SizedBox(height: 8.h),
                 Text(
-                  'Repository $index',
-                  style: TextStyles.semiBold18W600(context),
+                  repository.name,
+                  style: TextStyles.semiBold18W600(context).copyWith(
+                    color: context.colorScheme.primary,
+                  ),
                 ),
                 SizedBox(height: 4.h),
                 Text(
-                  'Description of repository $index',
+                  repository.description ?? 'No description',
                   style: TextStyles.regular12W400(context)
                       .copyWith(color: Colors.grey),
                   textAlign: TextAlign.center,

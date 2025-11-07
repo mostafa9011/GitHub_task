@@ -4,4 +4,8 @@ abstract class EndPoints {
   static String loginWithGithubUser({required String username}) {
     return "$baseUrl/users/$username";
   }
+
+  static String repositories({required String username}) {
+    return "$baseUrl/users/$username/repos";
+  }
 }
