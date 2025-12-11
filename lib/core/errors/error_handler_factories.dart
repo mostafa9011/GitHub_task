@@ -3,7 +3,6 @@ import 'package:dio/dio.dart';
 import 'api/dio_bad_response_error_handler.dart';
 import 'api/dio_error_handlers.dart';
 import 'error_handler_service.dart';
-import 'firebase/firebase_general_error_handler.dart';
 
 // This class is used as abstract factory
 /// parent of dio error handler and firebase error handler
@@ -37,12 +36,12 @@ class DioErrorHandlerFactory implements ErrorHandlerFactory {
   }
 }
 
-class FirebaseErrorHandlerFactory implements ErrorHandlerFactory {
-  @override
-  ErrorHandlerService getInstance(Exception exception) {
-    return FirebaseGeneralErrorHandler();
-    // switch (exception as FirebaseException) {
-    //   default: return FirebaseGeneralErrorHandler();
-    // }
-  }
-}
+// class FirebaseErrorHandlerFactory implements ErrorHandlerFactory {
+//   @override
+//   ErrorHandlerService getInstance(Exception exception) {
+//     // return FirebaseGeneralErrorHandler();
+//     // switch (exception as FirebaseException) {
+//     //   default: return FirebaseGeneralErrorHandler();
+//     // }
+//   }
+// }

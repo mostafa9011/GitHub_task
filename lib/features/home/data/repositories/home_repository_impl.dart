@@ -16,6 +16,31 @@ class HomeRepositoryImpl implements HomeRepository {
   });
 
   @override
+  Future<List<RepositoryEntity>> getCachedRepositories() async {
+    try {
+      return await homeLocalDataSource.getRepositories();
+    } catch (e) {
+      return []; // Return empty list if cache fails
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<RepositoryEntity>>> refreshRepositories() async {
+    try {
+      // Fetch fresh data from API
+      final repositories = await homeDataSource.getRepositories();
+
+      // Update the cache
+      await homeLocalDataSource.saveRepositories(repositories);
+
+      return Right(repositories);
+    } catch (e) {
+      // API call failed (offline or error)
+      return Left(ErrorHandlerService().handle(e as Exception));
+    }
+  }
+
+  @override
   Future<Either<Failure, List<RepositoryEntity>>> getRepositories() async {
     try {
       // Try to fetch from API first

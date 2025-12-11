@@ -4,32 +4,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:github_task/core/config/routes/page_name.dart';
 import 'package:github_task/core/config/themes/app_theme.dart';
 import 'package:github_task/core/extensions/context_extension.dart';
+import 'package:github_task/core/utils/functions/formate_date.dart';
 import 'package:github_task/core/utils/widgets/circular_image.dart';
 import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
-import 'package:intl/intl.dart';
 
 class RepositoriesGridview extends StatelessWidget {
   final List<RepositoryEntity> repositories;
 
   const RepositoriesGridview({super.key, required this.repositories});
-
-  String formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inDays == 0) {
-      if (difference.inHours == 0) {
-        return '${difference.inMinutes}m ago';
-      }
-      return '${difference.inHours}h ago';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inDays < 30) {
-      return '${(difference.inDays / 7).floor()}w ago';
-    } else {
-      return DateFormat('MMM dd').format(date);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +47,8 @@ class RepositoriesGridview extends StatelessWidget {
               children: [
                 CircularImage(radius: 16, image: repository.owner.avatarUrl),
                 SizedBox(height: 8.h),
+
+                // repository name
                 Text(
                   repository.name,
                   style: TextStyles.semiBold18W600(context).copyWith(
@@ -84,6 +68,7 @@ class RepositoriesGridview extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                 ),
                 SizedBox(height: 8.h),
+
                 // Stars
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -101,6 +86,7 @@ class RepositoriesGridview extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 4.h),
+
                 // Last updated
                 Text(
                   formatDate(repository.updatedAt),

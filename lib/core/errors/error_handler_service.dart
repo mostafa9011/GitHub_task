@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:firebase_core/firebase_core.dart';
 
 import 'error_handler_factories.dart';
 import 'failures.dart';
@@ -31,9 +30,9 @@ class ErrorHandlerAbstractFactory {
     if (exception is DioException) {
       return DioErrorHandlerFactory();
     }
-    if (exception is FirebaseException) {
-      return FirebaseErrorHandlerFactory();
-    }
+    // if (exception is FirebaseException) {
+    //   return FirebaseErrorHandlerFactory();
+    // }
     return DioErrorHandlerFactory();
   }
 }

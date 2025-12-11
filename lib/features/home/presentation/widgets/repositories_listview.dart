@@ -3,32 +3,14 @@ import 'package:flutter_bounceable/flutter_bounceable.dart';
 import 'package:github_task/core/config/routes/page_name.dart';
 import 'package:github_task/core/config/themes/app_theme.dart';
 import 'package:github_task/core/extensions/context_extension.dart';
+import 'package:github_task/core/utils/functions/formate_date.dart';
 import 'package:github_task/core/utils/widgets/circular_image.dart';
 import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
-import 'package:intl/intl.dart';
 
 class RepositoriesListview extends StatelessWidget {
   final List<RepositoryEntity> repositories;
 
   const RepositoriesListview({super.key, required this.repositories});
-
-  String formatDate(DateTime date) {
-    final now = DateTime.now();
-    final difference = now.difference(date);
-
-    if (difference.inDays == 0) {
-      if (difference.inHours == 0) {
-        return '${difference.inMinutes}m ago';
-      }
-      return '${difference.inHours}h ago';
-    } else if (difference.inDays < 7) {
-      return '${difference.inDays}d ago';
-    } else if (difference.inDays < 30) {
-      return '${(difference.inDays / 7).floor()}w ago';
-    } else {
-      return DateFormat('MMM dd, yyyy').format(date);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

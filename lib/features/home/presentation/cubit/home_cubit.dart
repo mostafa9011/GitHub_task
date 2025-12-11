@@ -18,51 +18,125 @@ class HomeCubit extends Cubit<HomeState> {
   Future<void> getRepositories({
     FilterEnum? filter,
   }) async {
-    emit(HomeLoading());
+    // Load cached data immediately (no loading state for instant display)
+    final cachedRepositories = await homeRepository.getCachedRepositories();
 
-    final result = await homeRepository.getRepositories();
-    result.fold(
-      (failure) => emit(HomeFailure(errorMessage: failure.message)),
-      (repositories) {
-        this.repositories = repositories;
+    if (cachedRepositories.isNotEmpty) {
+      // Show cached data instantly
+      repositories = cachedRepositories;
 
-        // Check if we're loading from cache (offline mode)
-        // This is a simple heuristic - you might need a better way to detect this
-        checkConnectivity().then((hasConnection) {
-          isOffline = !hasConnection;
+      // Load and apply saved sorting preference
+      final savedSort = await homeRepository.getSortingPreference();
+      if (savedSort != null) {
+        FilterEnum? filterToApply;
+        if (savedSort == 'stars') {
+          filterToApply = FilterEnum.stars;
+        } else if (savedSort == 'date') {
+          filterToApply = FilterEnum.date;
+        } else if (savedSort == 'name') {
+          filterToApply = FilterEnum.name;
+        }
 
-          // Load saved sorting preference and apply it
-          _loadAndApplySorting(repositories);
-        });
-      },
-    );
-  }
-
-  Future<void> _loadAndApplySorting(List<RepositoryEntity> repos) async {
-    final savedSort = await homeRepository.getSortingPreference();
-
-    if (savedSort != null) {
-      FilterEnum? filterToApply;
-      if (savedSort == 'stars') {
-        filterToApply = FilterEnum.stars;
-      } else if (savedSort == 'date') {
-        filterToApply = FilterEnum.date;
-      } else if (savedSort == 'name') {
-        filterToApply = FilterEnum.name;
+        if (filterToApply != null) {
+          currentFilter = filterToApply;
+          _applySorting(filterToApply, repositories);
+        }
       }
 
-      if (filterToApply != null) {
-        currentFilter = filterToApply;
-        sortRepositories(filter: filterToApply, savePreference: false);
-        return;
-      }
+      // Emit state with cached data (mark as potentially offline for now)
+      emit(HomeSuccess(repositories: repositories));
+    } else {
+      // No cached data, show loading
+      emit(HomeLoading());
     }
 
-    // No saved preference, just emit the repositories
-    if (isOffline) {
-      emit(HomeOfflineLoaded(repositories: repos));
+    // Try to refresh from API in background
+    final hasConnection = await checkConnectivity();
+
+    if (hasConnection) {
+      // Online: fetch fresh data
+      final result = await homeRepository.refreshRepositories();
+      result.fold(
+        (failure) {
+          // API failed but we already have cached data showing
+          // Don't emit error, just keep showing cached data
+          if (cachedRepositories.isEmpty) {
+            emit(HomeFailure(errorMessage: failure.message));
+          }
+        },
+        (freshRepositories) {
+          // Got fresh data from API
+          repositories = freshRepositories;
+
+          // Apply saved sorting if exists
+          if (currentFilter != null) {
+            _applySorting(currentFilter!, repositories);
+          }
+
+          // Update UI with fresh data
+          isOffline = false;
+          emit(HomeSuccess(repositories: repositories));
+        },
+      );
     } else {
-      emit(HomeSuccess(repositories: repos));
+      // Offline: mark as offline if we have cached data
+      if (cachedRepositories.isNotEmpty) {
+        isOffline = true;
+        emit(HomeOfflineLoaded(repositories: repositories));
+      } else {
+        // No cache and offline
+        emit(HomeFailure(
+            errorMessage:
+                'No internet connection and no cached data available'));
+      }
+    }
+  }
+
+  /// Manual refresh for pull-to-refresh
+  Future<void> refreshRepositoriesManually() async {
+    // Check connectivity first
+    final hasConnection = await checkConnectivity();
+
+    if (hasConnection) {
+      // Online: try to fetch fresh data
+      final result = await homeRepository.refreshRepositories();
+      result.fold(
+        (failure) {
+          // API failed - just keep current state, no error
+          // RefreshIndicator will complete
+        },
+        (freshRepositories) {
+          // Got fresh data from API
+          repositories = freshRepositories;
+
+          // Apply current sorting if exists
+          if (currentFilter != null) {
+            _applySorting(currentFilter!, repositories);
+          }
+
+          // Update UI with fresh data
+          isOffline = false;
+          emit(HomeSuccess(repositories: repositories));
+        },
+      );
+    } else {
+      // Offline: just keep current cached data showing
+      isOffline = true;
+      if (repositories.isNotEmpty) {
+        emit(HomeOfflineLoaded(repositories: repositories));
+      }
+      // RefreshIndicator will complete without changes
+    }
+  }
+
+  /// Apply sorting without saving preference
+  void _applySorting(FilterEnum filter, List<RepositoryEntity> repos) {
+    if (filter == FilterEnum.name) {
+      repos.sort((a, b) => a.name.compareTo(b.name));
+    } else if (filter == FilterEnum.date) {
+      repos.sort((a, b) => b.updatedAt.compareTo(a.updatedAt));
+    } else if (filter == FilterEnum.stars) {
+      repos.sort((a, b) => b.stargazersCount.compareTo(a.stargazersCount));
     }
   }
 
