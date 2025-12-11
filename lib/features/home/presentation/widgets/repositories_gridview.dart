@@ -62,7 +62,7 @@ class RepositoriesGridview extends StatelessWidget {
                 Text(
                   repository.owner.username,
                   style: TextStyles.regular12W400(context).copyWith(
-                    color: context.colorScheme.onSurface.withOpacity(0.6),
+                    color: context.colorScheme.onSecondary,
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -91,7 +91,7 @@ class RepositoriesGridview extends StatelessWidget {
                 Text(
                   formatDate(repository.updatedAt),
                   style: TextStyles.regular12W400(context).copyWith(
-                    color: context.colorScheme.onSurface.withOpacity(0.5),
+                    color: context.colorScheme.onSurface,
                   ),
                 ),
               ],
