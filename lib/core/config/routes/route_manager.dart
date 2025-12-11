@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:github_task/features/auth/domain/entities/github_user_entity.dart';
 import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
 import 'package:github_task/features/home/presentation/screens/repository_details_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
-import '../../../features/auth/presentation/screens/login_screen.dart';
 import '../../../features/home/presentation/screens/home_screen.dart';
 import 'page_name.dart';
 
@@ -14,17 +12,9 @@ class RouteManager {
 
   static Route<dynamic>? onGenerateRoute(RouteSettings routeSettings) {
     switch (routeSettings.name) {
-      case PageName.loginScreen:
-        return _getPageTransition(
-          const LoginScreen(),
-          settings: routeSettings,
-        );
-
       case PageName.homeScreen:
-        final user = routeSettings.arguments as GithubUserEntity;
-
         return _getPageTransition(
-          HomeScreen(user: user),
+          const HomeScreen(),
           settings: routeSettings,
         );
 

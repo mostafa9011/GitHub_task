@@ -4,7 +4,7 @@ import 'package:github_task/features/home/data/models/repository_model.dart';
 import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
 
 abstract class HomeDataSource {
-  Future<List<RepositoryEntity>> getRepositories({required String username});
+  Future<List<RepositoryEntity>> getRepositories();
 }
 
 class HomeDataSourceImpl implements HomeDataSource {
@@ -13,13 +13,10 @@ class HomeDataSourceImpl implements HomeDataSource {
   HomeDataSourceImpl({required this.dioConsumer});
 
   @override
-  Future<List<RepositoryEntity>> getRepositories({
-    required String username,
-  }) async {
-    final response =
-        await dioConsumer.get(path: EndPoints.repositories(username: username));
+  Future<List<RepositoryEntity>> getRepositories() async {
+    final response = await dioConsumer.get(path: EndPoints.repositories());
 
-    final List<RepositoryEntity> repositories = (response as List)
+    final List<RepositoryEntity> repositories = (response['items'] as List)
         .map((repoJson) => RepositoryModel.fromJson(repoJson))
         .toList();
 

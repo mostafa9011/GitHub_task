@@ -38,7 +38,7 @@ List<Interceptor> dioInterceptors = [
         CacheHelper.removeData(key: KeysManager.token);
         // Navigate to login page
         RouteManager.navigatorKey.currentState!.pushNamedAndRemoveUntil(
-          PageName.loginScreen,
+          PageName.homeScreen,
           (route) => false,
         );
       } else {

@@ -1,11 +1,7 @@
 abstract class EndPoints {
   static const String baseUrl = "https://api.github.com";
 
-  static String loginWithGithubUser({required String username}) {
-    return "$baseUrl/users/$username";
-  }
-
-  static String repositories({required String username}) {
-    return "$baseUrl/users/$username/repos";
+  static String repositories() {
+    return "/search/repositories?q=Flutter&sort=stars&order=desc";
   }
 }

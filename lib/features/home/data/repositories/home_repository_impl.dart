@@ -10,12 +10,9 @@ class HomeRepositoryImpl implements HomeRepository {
   HomeRepositoryImpl({required this.homeDataSource});
 
   @override
-  Future<Either<Failure, List<RepositoryEntity>>> getRepositories({
-    required String username,
-  }) async {
+  Future<Either<Failure, List<RepositoryEntity>>> getRepositories() async {
     try {
-      final repositories =
-          await homeDataSource.getRepositories(username: username);
+      final repositories = await homeDataSource.getRepositories();
       return Right(repositories);
     } catch (e) {
       return Left(ErrorHandlerService().handle(e as Exception));

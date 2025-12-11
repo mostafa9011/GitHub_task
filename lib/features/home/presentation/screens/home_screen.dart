@@ -2,24 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:github_task/core/utils/dependency_injection/di.dart';
-import 'package:github_task/features/auth/domain/entities/github_user_entity.dart';
 import 'package:github_task/features/home/presentation/cubit/home_cubit.dart';
 import 'package:github_task/features/home/presentation/widgets/custom_repositories.dart';
 import 'package:github_task/features/home/presentation/widgets/home_app_bar.dart';
 
 class HomeScreen extends StatelessWidget {
-  final GithubUserEntity user;
-
-  const HomeScreen({super.key, required this.user});
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          getIt<HomeCubit>()..getRepositories(username: user.username),
+      create: (context) => getIt<HomeCubit>()..getRepositories(),
       child: Scaffold(
         // app bar
-        appBar: homeAppBar(context: context, user: user),
+        appBar: homeAppBar(context: context),
 
         // body
         body: Padding(

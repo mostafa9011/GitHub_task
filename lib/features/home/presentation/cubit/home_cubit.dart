@@ -12,12 +12,11 @@ class HomeCubit extends Cubit<HomeState> {
   bool isGrid = true;
 
   Future<void> getRepositories({
-    required String username,
     FilterEnum? filter,
   }) async {
     emit(HomeLoading());
 
-    final result = await homeRepository.getRepositories(username: username);
+    final result = await homeRepository.getRepositories();
     result.fold(
       (failure) => emit(HomeFailure(errorMessage: failure.message)),
       (repositories) {
