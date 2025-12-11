@@ -7,6 +7,7 @@ class RepositoryEntity {
   final String defaultBranch;
   final int stargazersCount;
   final int forksCount;
+  final int openIssuesCount;
   final String language;
   final OwnerEntity owner;
   final DateTime updatedAt;
@@ -20,6 +21,7 @@ class RepositoryEntity {
     required this.defaultBranch,
     required this.stargazersCount,
     required this.forksCount,
+    required this.openIssuesCount,
     required this.language,
     required this.owner,
     required this.updatedAt,

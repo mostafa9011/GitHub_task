@@ -83,12 +83,9 @@ class CircularImage extends StatelessWidget {
           child: CachedNetworkImage(
             imageUrl: image.trim(),
             fit: BoxFit.cover,
-            errorWidget: (context, url, error) {
-              return Image.network(
-                "https://static.vecteezy.com/system/resources/previews/029/136/743/non_2x/error-round-line-icon-alert-attention-problem-danger-exclamation-mark-circle-circular-button-alarm-caution-warn-warning-black-line-sign-symbol-vector.jpg",
-                fit: BoxFit.cover,
-              );
-            },
+            // error widget
+            errorWidget: (context, url, error) =>
+                const Icon(Icons.error, color: Colors.red),
             placeholder: (context, url) =>
                 const CircularProgressIndicator.adaptive(),
           ),

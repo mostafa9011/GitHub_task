@@ -4,4 +4,6 @@ import 'package:github_task/features/home/domain/entities/repository_entitry.dar
 
 abstract class HomeRepository {
   Future<Either<Failure, List<RepositoryEntity>>> getRepositories();
+  Future<void> saveSortingPreference(String sortType);
+  Future<String?> getSortingPreference();
 }

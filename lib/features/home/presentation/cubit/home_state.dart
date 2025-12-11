@@ -12,6 +12,12 @@ class HomeSuccess extends HomeState {
   HomeSuccess({required this.repositories});
 }
 
+class HomeOfflineLoaded extends HomeState {
+  final List<RepositoryEntity> repositories;
+
+  HomeOfflineLoaded({required this.repositories});
+}
+
 class HomeFailure extends HomeState {
   final String errorMessage;
 

@@ -6,6 +6,7 @@ import 'package:github_task/core/utils/functions/custom_launch_url.dart';
 import 'package:github_task/core/utils/widgets/circular_image.dart';
 import 'package:github_task/core/utils/widgets/custom_app_bar.dart';
 import 'package:github_task/features/home/domain/entities/repository_entitry.dart';
+import 'package:intl/intl.dart';
 
 class RepositoryDetailsScreen extends StatelessWidget {
   final RepositoryEntity repository;
@@ -63,12 +64,12 @@ class RepositoryDetailsScreen extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Stats row
+            // Stats row - Stars and Forks
             Row(
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.star, size: 20),
+                    Icon(Icons.star, size: 20, color: Colors.amber.shade600),
                     const SizedBox(width: 6),
                     Text("${repository.stargazersCount} Stars"),
                   ],
@@ -84,7 +85,18 @@ class RepositoryDetailsScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 16),
+
+            // Open issues count
+            Row(
+              children: [
+                Icon(Icons.error_outline, size: 20, color: Colors.red.shade400),
+                const SizedBox(width: 6),
+                Text("${repository.openIssuesCount} Open Issues"),
+              ],
+            ),
+
+            const SizedBox(height: 16),
 
             // Language
             Row(
@@ -92,6 +104,20 @@ class RepositoryDetailsScreen extends StatelessWidget {
                 const Icon(Icons.code, size: 20),
                 const SizedBox(width: 6),
                 Text(repository.language),
+              ],
+            ),
+
+            const SizedBox(height: 16),
+
+            // Last updated with formatted date
+            Row(
+              children: [
+                const Icon(Icons.update, size: 20),
+                const SizedBox(width: 6),
+                Text(
+                  'Updated: ${DateFormat('MM-dd-yyyy HH:mm').format(repository.updatedAt)}',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ],
             ),
 
